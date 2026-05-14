@@ -45,7 +45,7 @@ function App() {
 
   // Note: basename is removed as HashRouter handles the path relative to index.html
   return (
-   <Router basename="/personality">
+   <Router>
       <Routes>
         <Route path="/" element={<Navigate to="/assessment" />} />
         <Route path="/assessment" element={<Assessment />} />
