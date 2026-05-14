@@ -62,10 +62,14 @@ const Dashboard = () => {
   };
 
   const copyToClipboard = (id) => {
-    const reportUrl = `${window.location.origin}/personality/report/${id}`;
-    navigator.clipboard.writeText(reportUrl);
-    setCopyStatus(id);
-    setTimeout(() => setCopyStatus(""), 2000);
+    // Hardcode the professional domain so the link is always correct
+    const baseUrl = "https://personality.diesh.ca";
+    const link = `${baseUrl}/report/${id}`;
+  
+    navigator.clipboard.writeText(link).then(() => {
+      setCopyStatus(id);
+      setTimeout(() => setCopyStatus(""), 2000);
+    });
   };
 
   if (loading) return <div style={styles.loader}>Loading...</div>;
