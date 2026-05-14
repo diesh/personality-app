@@ -48,8 +48,8 @@ export default async function middleware(request) {
   const pageUrl = request.url.split('?')[0];
   const ogImageUrl = `${OG_IMAGE_BASE}?name=${encodeURIComponent(data.firstName)}&style=${encodeURIComponent(data.style)}`;
   const ogTitle = data.clientName
-    ? `${data.clientName} — Personality Report`
-    : `${data.firstName}'s Personality Report`;
+  ? `${data.clientName} — ${data.style} Working Style`
+  : `${data.firstName}'s Working Profile`;
 	// Use the data you just confirmed exists in Firestore
 
 	const name = data.firstName || "Leader";
