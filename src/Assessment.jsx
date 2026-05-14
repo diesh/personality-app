@@ -41,17 +41,17 @@ const Assessment = () => {
     const cHigh = totals.C >= 3;
     const cLow  = totals.C <= -3;
 
-    if (oHigh && cHigh) return 'Architect';
-    if (oHigh && cLow)  return 'Pioneer';
-    if (oLow  && cHigh) return 'Expert';
-    if (oLow  && cLow)  return 'Driver';
+    if (oHigh && cHigh) return 'Visionary Architect';
+    if (oHigh && cLow)  return 'Creative Pioneer';
+    if (oLow  && cHigh) return 'Systematic Expert';
+    if (oLow  && cLow)  return 'Pragmatic Driver';
 
-    if (oHigh) return totals.C >= 0 ? 'Architect' : 'Pioneer';
-    if (oLow)  return totals.C >= 0 ? 'Expert' : 'Driver';
-    if (cHigh) return totals.O >= 0 ? 'Architect' : 'Expert';
-    if (cLow)  return totals.O >= 0 ? 'Pioneer' : 'Driver';
+    if (oHigh) return totals.C >= 0 ? 'Visionary Architect' : 'Creative Pioneer';
+    if (oLow)  return totals.C >= 0 ? 'Systematic Expert' : 'Pragmatic Driver';
+    if (cHigh) return totals.O >= 0 ? 'Visionary Architect' : 'Systematic Expert';
+    if (cLow)  return totals.O >= 0 ? 'Creative Pioneer' : 'Pragmatic Driver';
 
-    return 'Integrator';
+    return 'Adaptive Strategist';
   };
 
   const handleSubmit = async () => {
