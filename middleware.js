@@ -50,10 +50,14 @@ export default async function middleware(request) {
   const ogTitle = data.clientName
     ? `${data.clientName} — Personality Report`
     : `${data.firstName}'s Personality Report`;
-  const ogDescription = data.jobTitle
-    ? `${data.jobTitle} — See the full personality profile.`
-    : 'See the full personality profile.';
+	// Use the data you just confirmed exists in Firestore
 
+	const name = data.firstName || "Leader";
+	const title = data.jobTitle || "Professional";
+	const style = data.style || "Expert";
+
+	const ogDescription = `Discover ${name}’s workplace strengths. Explore their "${style}" style to unlock better communication and teamwork. View the report and get your own free assessment here!`;
+  
   const html = `<!DOCTYPE html>
 <html lang="en">
   <head>
