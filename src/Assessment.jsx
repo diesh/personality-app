@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 import { db } from './firebaseConfig';
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { questions } from './questions';
+import emailjs from '@emailjs/browser';
+
+const EMAILJS_SERVICE  = 'service_5ofud2s';
+const EMAILJS_PUB_KEY  = 'rFif4nClH_xt6N8ho';
+const TEMPLATE_ADMIN   = 'template_ph23kty';
+const TEMPLATE_USER    = 'template_4mibdo8';
 
 const classify = (val) => val >= 3 ? 'high' : val <= -3 ? 'low' : 'integrative';
 const classifyShort = (val) => val >= 2 ? 'high' : val <= -2 ? 'low' : 'integrative';
@@ -121,7 +127,7 @@ const Assessment = () => {
         .sort((a, b) => Math.abs(b.v) - Math.abs(a.v))[0];
       const eanLine = EAN_LINES[eanTop.t]?.[classifyShort(eanTop.v)] || '';
 
-      await addDoc(collection(db, "results"), {
+      const docRef = await addDoc(collection(db, "results"), {
         clientName: `${formData.firstName} ${formData.lastName}`,
         firstName: formData.firstName,
         jobTitle: formData.jobTitle,
@@ -130,6 +136,24 @@ const Assessment = () => {
         rawScores,
         timestamp: serverTimestamp()
       });
+
+      const reportUrl = `https://personality.diesh.ca/report/${docRef.id}`;
+
+      // Notify admin
+      emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, {
+        clientName: `${formData.firstName} ${formData.lastName}`,
+        jobTitle:   formData.jobTitle,
+        userEmail:  formData.email,
+        style,
+        reportUrl,
+      }, EMAILJS_PUB_KEY).catch(err => console.error('Admin email failed:', err));
+
+      // Email the user
+      emailjs.send(EMAILJS_SERVICE, TEMPLATE_USER, {
+        firstName: formData.firstName,
+        style,
+        ocLine,
+      }, EMAILJS_PUB_KEY).catch(err => console.error('User email failed:', err));
 
       setSubmissionResult({ style, ocLine, eanLine, firstName: formData.firstName });
       setStatus('success');
