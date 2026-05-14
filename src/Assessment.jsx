@@ -140,20 +140,30 @@ const Assessment = () => {
       const reportUrl = `https://personality.diesh.ca/report/${docRef.id}`;
 
       // Notify admin
-      emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, {
-        clientName: `${formData.firstName} ${formData.lastName}`,
-        jobTitle:   formData.jobTitle,
-        userEmail:  formData.email,
-        style,
-        reportUrl,
-      }, EMAILJS_PUB_KEY).catch(err => console.error('Admin email failed:', err));
+      try {
+        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, {
+          clientName: `${formData.firstName} ${formData.lastName}`,
+          jobTitle:   formData.jobTitle,
+          userEmail:  formData.email,
+          style,
+          reportUrl,
+          email:      'gagan@designstamp.com',
+        }, EMAILJS_PUB_KEY);
+      } catch (err) {
+        console.error('Admin email failed:', err);
+      }
 
       // Email the user
-      emailjs.send(EMAILJS_SERVICE, TEMPLATE_USER, {
-        firstName: formData.firstName,
-        style,
-        ocLine,
-      }, EMAILJS_PUB_KEY).catch(err => console.error('User email failed:', err));
+      try {
+        await emailjs.send(EMAILJS_SERVICE, TEMPLATE_USER, {
+          firstName: formData.firstName,
+          style,
+          ocLine,
+          email:     formData.email,
+        }, EMAILJS_PUB_KEY);
+      } catch (err) {
+        console.error('User email failed:', err);
+      }
 
       setSubmissionResult({ style, ocLine, eanLine, firstName: formData.firstName });
       setStatus('success');
