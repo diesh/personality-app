@@ -192,6 +192,26 @@ const Report = () => {
 
   return (
     <div style={styles.page}>
+
+      {/* CALLOUT BAR — above report container */}
+      <div style={{
+        background: '#000',
+        borderLeft: '4px solid #ff0000',
+        color: '#fff',
+        textAlign: 'center',
+        padding: '14px 20px',
+        fontSize: '0.88rem',
+        fontWeight: '500',
+        marginBottom: '16px',
+        maxWidth: '1000px',
+        margin: '0 auto 16px auto',
+      }}>
+        Want to understand how you show up to work?{' '}
+        <a href="https://personality.diesh.ca/" target="_blank" rel="noreferrer" style={{ color: '#ff0000', fontWeight: '700', textDecoration: 'none' }}>
+          Get your free personality assessment at personality.diesh.ca
+        </a>
+      </div>
+
       <div style={styles.container}>
 
 
@@ -217,6 +237,9 @@ const Report = () => {
         {/* PROFILE SUMMARY */}
         <section style={{ marginBottom: '50px', padding: '28px 30px', background: '#000', color: '#fff' }}>
           <div style={{ fontSize: '9px', fontWeight: '900', letterSpacing: '2px', color: '#666', marginBottom: '12px' }}>PROFILE SUMMARY</div>
+          <div style={{ fontSize: '13px', fontWeight: '700', color: '#ff0000', letterSpacing: '1px', marginBottom: '14px' }}>
+            Working Style: {data.style || 'Expert'}
+          </div>
           <p style={{ fontSize: '1.05rem', fontWeight: '700', lineHeight: '1.6', margin: '0 0 8px 0' }}>{ocLine}</p>
           <p style={{ fontSize: '0.88rem', fontWeight: '400', lineHeight: '1.6', margin: 0, color: 'rgba(255,255,255,0.6)' }}>{eanLine}</p>
         </section>
@@ -616,6 +639,46 @@ const Report = () => {
             })}
           </div>
         </section>
+
+        {/* BOTTOM CTA BOX */}
+        <div style={{
+          margin: '60px 0 40px 0',
+          padding: '28px 30px',
+          background: '#000',
+          borderLeft: '4px solid #ff0000',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '16px',
+        }}>
+          <div>
+            <div style={{ fontSize: '11px', fontWeight: '900', letterSpacing: '2px', color: '#666', marginBottom: '6px' }}>DIESH.CA</div>
+            <p style={{ margin: 0, color: '#fff', fontWeight: '600', fontSize: '1rem', lineHeight: '1.5' }}>
+              Want to understand how you and your team work?
+            </p>
+            <p style={{ margin: '4px 0 0 0', color: 'rgba(255,255,255,0.5)', fontSize: '0.85rem' }}>
+              Get Your Free Assessment
+            </p>
+          </div>
+          <a
+            href="https://personality.diesh.ca/"
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              background: '#ff0000',
+              color: '#fff',
+              padding: '12px 24px',
+              fontWeight: '700',
+              fontSize: '0.88rem',
+              textDecoration: 'none',
+              borderRadius: '2px',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            Get Your Free Assessment
+          </a>
+        </div>
 
         <footer style={styles.footer}>
           <div style={{ marginBottom: '10px', color: '#666', fontWeight: '700', letterSpacing: '1px' }}>
