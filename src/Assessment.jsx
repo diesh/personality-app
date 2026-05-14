@@ -3,12 +3,46 @@ import { db } from './firebaseConfig';
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { questions } from './questions';
 
+const classify = (val) => val >= 3 ? 'high' : val <= -3 ? 'low' : 'integrative';
+const classifyShort = (val) => val >= 2 ? 'high' : val <= -2 ? 'low' : 'integrative';
+
+const OC_LINES = {
+  'high-high':             "Wired to find what's next and build the machine to own it.",
+  'high-low':              "High appetite for the new, low tolerance for what slows things down.",
+  'high-integrative':      "Thinks expansively and executes pragmatically.",
+  'low-high':              "Moves when certain. Builds to last.",
+  'low-low':               "Trusts fast, practical action over elaborate plans.",
+  'low-integrative':       "Grounded and direct. Gets things done without overcomplicating them.",
+  'integrative-high':      "Balances creative thinking with rigorous follow-through.",
+  'integrative-low':       "Adapts fast and moves quickly once there's enough signal.",
+  'integrative-integrative': "Holds vision and execution, speed and quality, without needing to pick a side.",
+};
+
+const EAN_LINES = {
+  E: {
+    high:        "Thinks best in motion, through conversation and debate.",
+    low:         "Thinks best in stillness, before the room.",
+    integrative: "Shifts between external and internal processing as the work demands.",
+  },
+  A: {
+    high:        "Builds trust before building anything else.",
+    low:         "Leads with the truth, even when it's uncomfortable.",
+    integrative: "Knows when to push and when to hold back.",
+  },
+  N: {
+    high:        "Takes risk seriously. Needs to know the contingencies are covered.",
+    low:         "Holds steady when others are rattled.",
+    integrative: "Stays focused and keeps scanning when the ground shifts.",
+  },
+};
+
 const Assessment = () => {
-  const [step, setStep] = useState(0); 
-  const [formData, setFormData] = useState({ firstName: '', lastName: '', jobTitle: '' });
+  const [step, setStep] = useState(0);
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', jobTitle: '', email: '' });
   const [responses, setResponses] = useState({});
   const [status, setStatus] = useState('idle');
   const [submitError, setSubmitError] = useState(null);
+  const [submissionResult, setSubmissionResult] = useState(null);
 
   const options = [
     { label: 'Strongly Disagree', value: -2 },
@@ -76,14 +110,28 @@ const Assessment = () => {
 
       const style = computeStyle(rawScores);
 
+      const totals = { O: 0, C: 0, E: 0, A: 0, N: 0 };
+      rawScores.forEach(item => {
+        if (Object.prototype.hasOwnProperty.call(totals, item.trait)) totals[item.trait] += item.points;
+      });
+      const oTend = classify(totals.O);
+      const cTend = classify(totals.C);
+      const ocLine = OC_LINES[`${oTend}-${cTend}`] || '';
+      const eanTop = [{ t: 'E', v: totals.E }, { t: 'A', v: totals.A }, { t: 'N', v: totals.N }]
+        .sort((a, b) => Math.abs(b.v) - Math.abs(a.v))[0];
+      const eanLine = EAN_LINES[eanTop.t]?.[classifyShort(eanTop.v)] || '';
+
       await addDoc(collection(db, "results"), {
         clientName: `${formData.firstName} ${formData.lastName}`,
         firstName: formData.firstName,
         jobTitle: formData.jobTitle,
+        email: formData.email,
         style,
         rawScores,
         timestamp: serverTimestamp()
       });
+
+      setSubmissionResult({ style, ocLine, eanLine, firstName: formData.firstName });
       setStatus('success');
     } catch (e) {
       console.error(e);
@@ -94,29 +142,70 @@ const Assessment = () => {
 
   if (status === 'submitting') return <div style={styles.loader}>CALIBRATING DATA...</div>;
 
-  if (status === 'success') return (
-      <div style={styles.container}>
-        <h2 style={styles.h2}>
-        <span style={{ color: '#27ae60', marginRight: '10px' }}>✓</span>
-        Responses Received
-      </h2>
-        <p style={styles.body}>
-          Thank you, {formData.firstName}. I’ve received your responses and will review your answers to identify the key drivers of your professional style.
-        </p>
-        <p style={styles.body}>
-          Once I've completed the analysis, I’ll reach out to arrange time for us to review the findings together. During that session, we’ll establish a plan to leverage your strengths and navigate any friction points.
-        </p>
-      
-        {/* Decorated Website Link */}
-        <div style={styles.footerLinkContainer}>
-          <div style={styles.divider}></div>
-          <a href="https://diesh.ca" style={styles.websiteLink}>
-             diesh.ca
-            <span style={styles.linkArrow}>→</span>
+  if (status === ‘success’ && submissionResult) return (
+    <div style={{ backgroundColor: ‘#fcfcfc’, minHeight: ‘100vh’, fontFamily: ‘"Inter", sans-serif’, padding: ‘20px 10px’ }}>
+      <div style={{ maxWidth: ‘800px’, margin: ‘0 auto’, backgroundColor: ‘#fff’, border: ‘1px solid #eee’, padding: ‘5% 7%’, boxShadow: ‘0 5px 15px rgba(0,0,0,0.02)’ }}>
+
+        {/* Header */}
+        <div style={{ borderBottom: ‘2px solid #000’, paddingBottom: ‘24px’, marginBottom: ‘32px’ }}>
+          <div style={{ fontSize: ‘10px’, fontWeight: ‘900’, letterSpacing: ‘2px’, color: ‘#999’, marginBottom: ‘12px’ }}>PERSONAL REPORT</div>
+          <h1 style={{ fontSize: ‘calc(1.6rem + 1vw)’, fontWeight: ‘900’, letterSpacing: ‘-1px’, margin: ‘0 0 6px 0’ }}>{formData.firstName} {formData.lastName}</h1>
+          <p style={{ fontSize: ‘0.85rem’, color: ‘#666’, letterSpacing: ‘1.5px’, margin: 0, fontWeight: ‘600’ }}>{formData.jobTitle.toUpperCase()}</p>
+        </div>
+
+        {/* Profile Summary — visible */}
+        <div style={{ marginBottom: ‘32px’, padding: ‘28px 30px’, background: ‘#000’, color: ‘#fff’ }}>
+          <div style={{ fontSize: ‘9px’, fontWeight: ‘900’, letterSpacing: ‘2px’, color: ‘#666’, marginBottom: ‘12px’ }}>PROFILE SUMMARY</div>
+          <div style={{ fontSize: ‘13px’, fontWeight: ‘700’, color: ‘#ff0000’, letterSpacing: ‘1px’, marginBottom: ‘14px’ }}>
+            Working Style: {submissionResult.style}
+          </div>
+          <p style={{ fontSize: ‘1.05rem’, fontWeight: ‘700’, lineHeight: ‘1.6’, margin: ‘0 0 8px 0’ }}>{submissionResult.ocLine}</p>
+          <p style={{ fontSize: ‘0.88rem’, fontWeight: ‘400’, lineHeight: ‘1.6’, margin: 0, color: ‘rgba(255,255,255,0.6)’ }}>{submissionResult.eanLine}</p>
+        </div>
+
+        {/* CTA */}
+        <div style={{ border: ‘2px solid #000’, padding: ‘28px 30px’, marginBottom: ‘32px’ }}>
+          <div style={{ fontSize: ‘9px’, fontWeight: ‘900’, letterSpacing: ‘2px’, color: ‘#999’, marginBottom: ‘12px’ }}>YOUR FULL REPORT IS READY</div>
+          <p style={{ fontSize: ‘1.1rem’, fontWeight: ‘700’, lineHeight: ‘1.5’, margin: ‘0 0 8px 0’ }}>
+            Book a 45-minute debrief with Gagan to walk through it together.
+          </p>
+          <p style={{ fontSize: ‘0.88rem’, color: ‘#555’, lineHeight: ‘1.6’, margin: ‘0 0 24px 0’ }}>
+            Your report covers how you think, how you execute, where you create friction, and what conditions bring out your best work. We’ll unpack it together and build a plan around it.
+          </p>
+          <a
+            href="https://calendar.app.google/zVv8SaHjWnpTgbN18"
+            target="_blank"
+            rel="noreferrer"
+            style={{ display: ‘inline-block’, background: ‘#000’, color: ‘#fff’, padding: ‘14px 28px’, fontWeight: ‘700’, fontSize: ‘0.9rem’, textDecoration: ‘none’, letterSpacing: ‘0.5px’ }}
+          >
+            Book Your Report Debrief
           </a>
         </div>
+
+        {/* Blurred report preview */}
+        <div style={{ position: ‘relative’, overflow: ‘hidden’, borderRadius: ‘2px’ }}>
+          <div style={{ filter: ‘blur(5px)’, pointerEvents: ‘none’, userSelect: ‘none’, opacity: 0.6 }}>
+            {/* Fake section previews */}
+            {[‘01. How You Think’, ‘02. How You Show Up’, ‘03. How You Execute’, ‘04. Where You Create Friction’, ‘05. Working With You’].map((title, i) => (
+              <div key={i} style={{ marginBottom: ‘40px’, borderTop: ‘1px solid #eee’, paddingTop: ‘24px’ }}>
+                <div style={{ display: ‘flex’, justifyContent: ‘space-between’, marginBottom: ‘16px’ }}>
+                  <div style={{ fontSize: ‘1.1rem’, fontWeight: ‘800’ }}>{title}</div>
+                  <div style={{ fontSize: ‘9px’, fontWeight: ‘900’, color: ‘#ff0000’ }}>UNLOCKED IN DEBRIEF</div>
+                </div>
+                <div style={{ height: ‘12px’, background: ‘#eee’, borderRadius: ‘2px’, marginBottom: ‘10px’, width: ‘90%’ }} />
+                <div style={{ height: ‘12px’, background: ‘#eee’, borderRadius: ‘2px’, marginBottom: ‘10px’, width: ‘75%’ }} />
+                <div style={{ height: ‘12px’, background: ‘#eee’, borderRadius: ‘2px’, marginBottom: ‘10px’, width: ‘85%’ }} />
+                <div style={{ height: ‘12px’, background: ‘#eee’, borderRadius: ‘2px’, width: ‘60%’ }} />
+              </div>
+            ))}
+          </div>
+          {/* Gradient fade overlay */}
+          <div style={{ position: ‘absolute’, top: 0, left: 0, right: 0, bottom: 0, background: ‘linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 100%)’, pointerEvents: ‘none’ }} />
+        </div>
+
       </div>
-    );
+    </div>
+  );
 
   // OPENING SCREEN
   if (step === 0) return (
@@ -143,9 +232,18 @@ const Assessment = () => {
             Tip: If you are currently between roles, please use your most recent job title.
           </p>
         </div>
+        <input
+          style={styles.input}
+          type="email"
+          placeholder="Email Address"
+          onChange={(e) => setFormData({...formData, email: e.target.value})}
+        />
+        <p style={{ fontSize: '11px', color: '#888', marginTop: '-10px', marginBottom: '15px', fontStyle: 'italic' }}>
+          I will review your report with you and suggest some actionable steps to help you optimise how you show up to work.
+        </p>
       </div>
 
-      <button disabled={!formData.firstName || !formData.jobTitle} onClick={() => setStep(1)} style={styles.btn}>
+      <button disabled={!formData.firstName || !formData.jobTitle || !formData.email} onClick={() => setStep(1)} style={styles.btn}>
         BEGIN ASSESSMENT
       </button>
     </div>
