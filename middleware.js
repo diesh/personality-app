@@ -56,7 +56,7 @@ export default async function middleware(request) {
 	const title = data.jobTitle || "Professional";
 	const style = data.style || "Expert";
 
-	const ogDescription = `Discover ${name}’s workplace strengths. Explore their "${style}" style to unlock better communication and teamwork. View the report and get your own free assessment here!`;
+	const ogDescription = `Discover ${name}'s workplace strengths. As a ${title} with an ${style} working style, this profile unlocks better communication and teamwork. View the report and get your own free assessment here!`;
   
   const html = `<!DOCTYPE html>
 <html lang="en">
