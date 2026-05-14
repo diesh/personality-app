@@ -210,6 +210,13 @@ const Assessment = () => {
   // OPENING SCREEN
   if (step === 0) return (
     <div style={styles.container}>
+
+      {/* Branding */}
+      <a href="https://diesh.ca/" target="_blank" rel="noreferrer" style={{ display: 'block', textDecoration: 'none', color: '#000', marginBottom: '36px', paddingBottom: '24px', borderBottom: '2px solid #000' }}>
+        <strong style={{ display: 'block', fontSize: '1.15rem', fontWeight: '900', letterSpacing: '3px', lineHeight: 1 }}>GAGAN DIESH</strong>
+        <span style={{ display: 'block', fontSize: '0.65rem', fontWeight: '600', letterSpacing: '2.5px', color: '#666', marginTop: '5px' }}>CAREER &amp; LEADERSHIP COACHING</span>
+      </a>
+
       <div style={styles.header}>
         <span style={styles.progress}>PROFESSIONAL ANALYSIS</span>
         <h2 style={styles.h1}>Personality and Work Style Assessment</h2>
