@@ -30,6 +30,30 @@ const Assessment = () => {
     setStep(step - 1);
   };
 
+  const computeStyle = (rawScores) => {
+    const totals = { O: 0, C: 0, E: 0, A: 0, N: 0 };
+    rawScores.forEach(item => {
+      if (Object.prototype.hasOwnProperty.call(totals, item.trait)) totals[item.trait] += item.points;
+    });
+
+    const oHigh = totals.O >= 3;
+    const oLow  = totals.O <= -3;
+    const cHigh = totals.C >= 3;
+    const cLow  = totals.C <= -3;
+
+    if (oHigh && cHigh) return 'Architect';
+    if (oHigh && cLow)  return 'Pioneer';
+    if (oLow  && cHigh) return 'Expert';
+    if (oLow  && cLow)  return 'Driver';
+
+    if (oHigh) return totals.C >= 0 ? 'Architect' : 'Pioneer';
+    if (oLow)  return totals.C >= 0 ? 'Expert' : 'Driver';
+    if (cHigh) return totals.O >= 0 ? 'Architect' : 'Expert';
+    if (cLow)  return totals.O >= 0 ? 'Pioneer' : 'Driver';
+
+    return 'Integrator';
+  };
+
   const handleSubmit = async () => {
     const unanswered = questions.filter(q => responses[q.id] === undefined);
     if (unanswered.length > 0) {
@@ -50,10 +74,13 @@ const Assessment = () => {
         };
       });
 
+      const style = computeStyle(rawScores);
+
       await addDoc(collection(db, "results"), {
         clientName: `${formData.firstName} ${formData.lastName}`,
         firstName: formData.firstName,
         jobTitle: formData.jobTitle,
+        style,
         rawScores,
         timestamp: serverTimestamp()
       });
