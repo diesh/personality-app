@@ -193,27 +193,23 @@ const Report = () => {
   return (
     <div style={styles.page}>
 
-      {/* CALLOUT BAR — above report container */}
-      <div style={{
-        background: '#000',
-        borderLeft: '4px solid #ff0000',
-        color: '#fff',
-        textAlign: 'center',
-        padding: '14px 20px',
-        fontSize: '0.88rem',
-        fontWeight: '500',
-        marginBottom: '16px',
-        maxWidth: '1000px',
-        margin: '0 auto 16px auto',
-      }}>
-        Want to understand how you show up to work?{' '}
-        <a href="https://personality.diesh.ca/" target="_blank" rel="noreferrer" style={{ color: '#ff0000', fontWeight: '700', textDecoration: 'none' }}>
-          Get your free personality assessment at personality.diesh.ca
-        </a>
-      </div>
-
       <div style={styles.container}>
 
+        {/* CALLOUT BAR — top of report */}
+        <div style={{
+          background: '#fff',
+          borderLeft: '4px solid #ff0000',
+          padding: '14px 20px',
+          fontSize: '0.88rem',
+          fontWeight: '500',
+          marginBottom: '32px',
+          color: '#111',
+        }}>
+          Want to understand how you show up to work?{' '}
+          <a href="https://personality.diesh.ca/" target="_blank" rel="noreferrer" style={{ color: '#ff0000', fontWeight: '700', textDecoration: 'none' }}>
+            Get your free assessment at personality.diesh.ca
+          </a>
+        </div>
 
         <header style={styles.header}>
 	  
