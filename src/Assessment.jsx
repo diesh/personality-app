@@ -142,65 +142,65 @@ const Assessment = () => {
 
   if (status === 'submitting') return <div style={styles.loader}>CALIBRATING DATA...</div>;
 
-  if (status === ‘success’ && submissionResult) return (
-    <div style={{ backgroundColor: ‘#fcfcfc’, minHeight: ‘100vh’, fontFamily: ‘"Inter", sans-serif’, padding: ‘20px 10px’ }}>
-      <div style={{ maxWidth: ‘800px’, margin: ‘0 auto’, backgroundColor: ‘#fff’, border: ‘1px solid #eee’, padding: ‘5% 7%’, boxShadow: ‘0 5px 15px rgba(0,0,0,0.02)’ }}>
+  if (status === 'success' && submissionResult) return (
+    <div style={{ backgroundColor: '#fcfcfc', minHeight: '100vh', fontFamily: '"Inter", sans-serif', padding: '20px 10px' }}>
+      <div style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#fff', border: '1px solid #eee', padding: '5% 7%', boxShadow: '0 5px 15px rgba(0,0,0,0.02)' }}>
 
         {/* Header */}
-        <div style={{ borderBottom: ‘2px solid #000’, paddingBottom: ‘24px’, marginBottom: ‘32px’ }}>
-          <div style={{ fontSize: ‘10px’, fontWeight: ‘900’, letterSpacing: ‘2px’, color: ‘#999’, marginBottom: ‘12px’ }}>PERSONAL REPORT</div>
-          <h1 style={{ fontSize: ‘calc(1.6rem + 1vw)’, fontWeight: ‘900’, letterSpacing: ‘-1px’, margin: ‘0 0 6px 0’ }}>{formData.firstName} {formData.lastName}</h1>
-          <p style={{ fontSize: ‘0.85rem’, color: ‘#666’, letterSpacing: ‘1.5px’, margin: 0, fontWeight: ‘600’ }}>{formData.jobTitle.toUpperCase()}</p>
+        <div style={{ borderBottom: '2px solid #000', paddingBottom: '24px', marginBottom: '32px' }}>
+          <div style={{ fontSize: '10px', fontWeight: '900', letterSpacing: '2px', color: '#999', marginBottom: '12px' }}>PERSONAL REPORT</div>
+          <h1 style={{ fontSize: 'calc(1.6rem + 1vw)', fontWeight: '900', letterSpacing: '-1px', margin: '0 0 6px 0' }}>{formData.firstName} {formData.lastName}</h1>
+          <p style={{ fontSize: '0.85rem', color: '#666', letterSpacing: '1.5px', margin: 0, fontWeight: '600' }}>{formData.jobTitle.toUpperCase()}</p>
         </div>
 
         {/* Profile Summary — visible */}
-        <div style={{ marginBottom: ‘32px’, padding: ‘28px 30px’, background: ‘#000’, color: ‘#fff’ }}>
-          <div style={{ fontSize: ‘9px’, fontWeight: ‘900’, letterSpacing: ‘2px’, color: ‘#666’, marginBottom: ‘12px’ }}>PROFILE SUMMARY</div>
-          <div style={{ fontSize: ‘13px’, fontWeight: ‘700’, color: ‘#ff0000’, letterSpacing: ‘1px’, marginBottom: ‘14px’ }}>
+        <div style={{ marginBottom: '32px', padding: '28px 30px', background: '#000', color: '#fff' }}>
+          <div style={{ fontSize: '9px', fontWeight: '900', letterSpacing: '2px', color: '#666', marginBottom: '12px' }}>PROFILE SUMMARY</div>
+          <div style={{ fontSize: '13px', fontWeight: '700', color: '#ff0000', letterSpacing: '1px', marginBottom: '14px' }}>
             Working Style: {submissionResult.style}
           </div>
-          <p style={{ fontSize: ‘1.05rem’, fontWeight: ‘700’, lineHeight: ‘1.6’, margin: ‘0 0 8px 0’ }}>{submissionResult.ocLine}</p>
-          <p style={{ fontSize: ‘0.88rem’, fontWeight: ‘400’, lineHeight: ‘1.6’, margin: 0, color: ‘rgba(255,255,255,0.6)’ }}>{submissionResult.eanLine}</p>
+          <p style={{ fontSize: '1.05rem', fontWeight: '700', lineHeight: '1.6', margin: '0 0 8px 0' }}>{submissionResult.ocLine}</p>
+          <p style={{ fontSize: '0.88rem', fontWeight: '400', lineHeight: '1.6', margin: 0, color: 'rgba(255,255,255,0.6)' }}>{submissionResult.eanLine}</p>
         </div>
 
         {/* CTA */}
-        <div style={{ border: ‘2px solid #000’, padding: ‘28px 30px’, marginBottom: ‘32px’ }}>
-          <div style={{ fontSize: ‘9px’, fontWeight: ‘900’, letterSpacing: ‘2px’, color: ‘#999’, marginBottom: ‘12px’ }}>YOUR FULL REPORT IS READY</div>
-          <p style={{ fontSize: ‘1.1rem’, fontWeight: ‘700’, lineHeight: ‘1.5’, margin: ‘0 0 8px 0’ }}>
+        <div style={{ border: '2px solid #000', padding: '28px 30px', marginBottom: '32px' }}>
+          <div style={{ fontSize: '9px', fontWeight: '900', letterSpacing: '2px', color: '#999', marginBottom: '12px' }}>YOUR FULL REPORT IS READY</div>
+          <p style={{ fontSize: '1.1rem', fontWeight: '700', lineHeight: '1.5', margin: '0 0 8px 0' }}>
             Book a 45-minute debrief with Gagan to walk through it together.
           </p>
-          <p style={{ fontSize: ‘0.88rem’, color: ‘#555’, lineHeight: ‘1.6’, margin: ‘0 0 24px 0’ }}>
-            Your report covers how you think, how you execute, where you create friction, and what conditions bring out your best work. We’ll unpack it together and build a plan around it.
+          <p style={{ fontSize: '0.88rem', color: '#555', lineHeight: '1.6', margin: '0 0 24px 0' }}>
+            Your report covers how you think, how you execute, where you create friction, and what conditions bring out your best work. We'll unpack it together and build a plan around it.
           </p>
           <a
             href="https://calendar.app.google/zVv8SaHjWnpTgbN18"
             target="_blank"
             rel="noreferrer"
-            style={{ display: ‘inline-block’, background: ‘#000’, color: ‘#fff’, padding: ‘14px 28px’, fontWeight: ‘700’, fontSize: ‘0.9rem’, textDecoration: ‘none’, letterSpacing: ‘0.5px’ }}
+            style={{ display: 'inline-block', background: '#000', color: '#fff', padding: '14px 28px', fontWeight: '700', fontSize: '0.9rem', textDecoration: 'none', letterSpacing: '0.5px' }}
           >
             Book Your Report Debrief
           </a>
         </div>
 
         {/* Blurred report preview */}
-        <div style={{ position: ‘relative’, overflow: ‘hidden’, borderRadius: ‘2px’ }}>
-          <div style={{ filter: ‘blur(5px)’, pointerEvents: ‘none’, userSelect: ‘none’, opacity: 0.6 }}>
+        <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '2px' }}>
+          <div style={{ filter: 'blur(5px)', pointerEvents: 'none', userSelect: 'none', opacity: 0.6 }}>
             {/* Fake section previews */}
-            {[‘01. How You Think’, ‘02. How You Show Up’, ‘03. How You Execute’, ‘04. Where You Create Friction’, ‘05. Working With You’].map((title, i) => (
-              <div key={i} style={{ marginBottom: ‘40px’, borderTop: ‘1px solid #eee’, paddingTop: ‘24px’ }}>
-                <div style={{ display: ‘flex’, justifyContent: ‘space-between’, marginBottom: ‘16px’ }}>
-                  <div style={{ fontSize: ‘1.1rem’, fontWeight: ‘800’ }}>{title}</div>
-                  <div style={{ fontSize: ‘9px’, fontWeight: ‘900’, color: ‘#ff0000’ }}>UNLOCKED IN DEBRIEF</div>
+            {['01. How You Think', '02. How You Show Up', '03. How You Execute', '04. Where You Create Friction', '05. Working With You'].map((title, i) => (
+              <div key={i} style={{ marginBottom: '40px', borderTop: '1px solid #eee', paddingTop: '24px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+                  <div style={{ fontSize: '1.1rem', fontWeight: '800' }}>{title}</div>
+                  <div style={{ fontSize: '9px', fontWeight: '900', color: '#ff0000' }}>UNLOCKED IN DEBRIEF</div>
                 </div>
-                <div style={{ height: ‘12px’, background: ‘#eee’, borderRadius: ‘2px’, marginBottom: ‘10px’, width: ‘90%’ }} />
-                <div style={{ height: ‘12px’, background: ‘#eee’, borderRadius: ‘2px’, marginBottom: ‘10px’, width: ‘75%’ }} />
-                <div style={{ height: ‘12px’, background: ‘#eee’, borderRadius: ‘2px’, marginBottom: ‘10px’, width: ‘85%’ }} />
-                <div style={{ height: ‘12px’, background: ‘#eee’, borderRadius: ‘2px’, width: ‘60%’ }} />
+                <div style={{ height: '12px', background: '#eee', borderRadius: '2px', marginBottom: '10px', width: '90%' }} />
+                <div style={{ height: '12px', background: '#eee', borderRadius: '2px', marginBottom: '10px', width: '75%' }} />
+                <div style={{ height: '12px', background: '#eee', borderRadius: '2px', marginBottom: '10px', width: '85%' }} />
+                <div style={{ height: '12px', background: '#eee', borderRadius: '2px', width: '60%' }} />
               </div>
             ))}
           </div>
           {/* Gradient fade overlay */}
-          <div style={{ position: ‘absolute’, top: 0, left: 0, right: 0, bottom: 0, background: ‘linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 100%)’, pointerEvents: ‘none’ }} />
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.85) 100%)', pointerEvents: 'none' }} />
         </div>
 
       </div>
