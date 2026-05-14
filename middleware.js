@@ -1,5 +1,3 @@
-import { NextResponse } from 'next/server';
-
 const CRAWLER_AGENTS = [
   'linkedinbot',
   'twitterbot',
@@ -33,24 +31,21 @@ async function fetchReportData(docId) {
   };
 }
 
-export async function middleware(request) {
-  const { pathname } = request.nextUrl;
+export default async function middleware(request) {
+  const { pathname } = new URL(request.url);
   const userAgent = request.headers.get('user-agent') || '';
 
-  // Only intercept /report/:id paths for crawlers
   const reportMatch = pathname.match(/^\/report\/([^/]+)$/);
   if (!reportMatch || !isCrawler(userAgent)) {
-    return NextResponse.next();
+    return;
   }
 
   const docId = reportMatch[1];
   const data = await fetchReportData(docId);
 
-  if (!data) {
-    return NextResponse.next();
-  }
+  if (!data) return;
 
-  const pageUrl = request.url.split('?')[0]; // strip any ?v= timestamp
+  const pageUrl = request.url.split('?')[0];
   const ogImageUrl = `${OG_IMAGE_BASE}?name=${encodeURIComponent(data.firstName)}&style=${encodeURIComponent(data.style)}`;
   const ogTitle = data.clientName
     ? `${data.clientName} — Personality Report`
@@ -81,7 +76,7 @@ export async function middleware(request) {
   </body>
 </html>`;
 
-  return new NextResponse(html, {
+  return new Response(html, {
     status: 200,
     headers: { 'Content-Type': 'text/html' },
   });
