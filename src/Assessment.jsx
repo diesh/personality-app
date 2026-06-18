@@ -139,6 +139,17 @@ const Assessment = () => {
 
       const reportUrl = `https://personality.diesh.ca/report/${docRef.id}`;
 
+      // Push to Kit tagged "assessment"
+      try {
+        await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: formData.email, firstName: formData.firstName, style }),
+        });
+      } catch (err) {
+        console.error('Kit subscribe failed:', err);
+      }
+
       // Notify admin
       try {
         await emailjs.send(EMAILJS_SERVICE, TEMPLATE_ADMIN, {
